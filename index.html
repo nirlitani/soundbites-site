@@ -8,8 +8,12 @@
 <meta name="theme-color" content="#F6F3EE">
 <meta property="og:title" content="Soundbites · Your feed, for your ears">
 <meta property="og:description" content="Short audio clips that play one after another and learn what you like.">
-<meta property="og:image" content="media/s1-cook.jpg">
+<meta property="og:image" content="https://nirlitani.github.io/soundbites-site/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://nirlitani.github.io/soundbites-site/">
 <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FF2D6F'/%3E%3Cstop offset='1' stop-color='%237C5CFF'/%3E%3C/linearGradient%3E%3Cmask id='m'%3E%3Crect width='1024' height='1024' fill='%23fff'/%3E%3Ccircle cx='756' cy='268' r='150'/%3E%3Ccircle cx='643' cy='187' r='78'/%3E%3Ccircle cx='836' cy='381' r='78'/%3E%3Crect x='291' y='457' width='58' height='110' rx='29'/%3E%3Crect x='387' y='402' width='58' height='220' rx='29'/%3E%3Crect x='483' y='342' width='58' height='340' rx='29'/%3E%3Crect x='579' y='402' width='58' height='220' rx='29'/%3E%3Crect x='675' y='457' width='58' height='110' rx='29'/%3E%3C/mask%3E%3C/defs%3E%3Crect width='1024' height='1024' rx='230' fill='url(%23g)'/%3E%3Ccircle cx='512' cy='512' r='330' fill='%23fff' mask='url(%23m)'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
@@ -60,6 +64,32 @@ em{font-style:italic}
 .btn-fill{background:var(--on-dark);color:var(--ink);border-color:var(--on-dark)}
 .btn-fill:hover{background:transparent;color:var(--on-dark)}
 .tlink{font-size:11px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;padding:12px 0 5px;border-bottom:1px solid currentColor}
+
+/* smooth wheel scrolling (desktop only; touch stays native) */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}
+.lenis.lenis-stopped{overflow:hidden}
+
+/* page progress line */
+.pbar{position:fixed;left:0;right:0;top:env(safe-area-inset-top, 0px);height:2px;z-index:70;pointer-events:none;transform-origin:left;transform:scaleX(var(--sp,0));background:linear-gradient(90deg,#FF2D6F,#7C5CFF)}
+
+/* hero headline rises line by line on load */
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.1em;margin-bottom:-.1em}
+.hero h1 .ln > span{display:block;transform:translateY(108%);animation:rise 1.15s var(--ease) forwards}
+.hero h1 .ln + .ln > span{animation-delay:.14s}
+.hero .label,.hero p,.hero .ctas{animation:fadeup 1s var(--ease) both}
+.hero p{animation-delay:.35s}.hero .ctas{animation-delay:.5s}
+@keyframes rise{to{transform:none}}
+@keyframes fadeup{from{opacity:0;transform:translateY(16px)}}
+
+/* statement: words light up as you scroll */
+.say{position:relative;height:230vh;background:var(--paper)}
+.say-pin{position:sticky;top:0;height:100svh;display:flex;align-items:center}
+.say-text{margin:0 auto;max-width:1040px;font-family:var(--serif);font-weight:300;font-size:clamp(38px,5.6vw,78px);line-height:1.08;letter-spacing:-.012em;text-wrap:pretty}
+.say-text .w{opacity:.13;transition:opacity .2s linear}
+.say-text .em{font-style:italic;color:var(--rust)}
+@media (max-width:820px){.say{height:200vh}.say-text{font-size:40px;line-height:1.1}}
 
 /* reveal: visible at rest; only below-the-fold items get .pre from script */
 .rv{transition:opacity .9s var(--ease),transform .9s var(--ease)}
@@ -242,13 +272,24 @@ em{font-style:italic}
 .made-head{padding-block:120px 64px;display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
 .made-head h2{font-size:clamp(46px,6vw,84px);line-height:1}
 .made-head p{margin:0;color:var(--on-dark-soft);font-size:16px}
-.reelwrap{position:relative;height:640vh}
+.reelwrap{position:relative;height:980vh}
 .stage2{position:sticky;top:0;height:100svh;overflow:hidden;background:var(--forest);clip-path:inset(calc(var(--ei,1) * 6vh) calc(var(--ei,1) * 6vw) round calc(var(--ei,1) * 26px))}
-.layer{position:absolute;inset:0;overflow:hidden;background:#0d0b09;will-change:clip-path}
-.layer + .layer{clip-path:inset(100% 0 0 0)}
-.layer video{position:absolute;inset:-6% 0;width:100%;height:112%;object-fit:cover;transform:translate3d(0,var(--py,0%),0) scale(var(--z,1));filter:brightness(var(--br,1));will-change:transform}
-.layer::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.42),transparent 28%,transparent 52%,rgba(0,0,0,.74));pointer-events:none}
+/* curtain wipe: the layer slides up while its contents counter-slide, so only transforms move (smooth on iPhone) */
+.layer{position:absolute;inset:0;overflow:hidden;background:#0d0b09;transform:translate3d(0,calc(var(--w,0) * 100%),0)}
+.layer + .layer{--w:1}
+.layer .inner{position:absolute;inset:0;transform:translate3d(0,calc(var(--w,0) * -82%),0)}
+.layer video{position:absolute;inset:-6% 0;width:100%;height:112%;object-fit:cover;transform:translate3d(0,var(--py,0%),0) scale(var(--z,1));will-change:transform}
+.layer .inner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.42),transparent 28%,transparent 50%,rgba(0,0,0,.78));pointer-events:none}
+.layer .dim{position:absolute;inset:0;z-index:1;background:#000;opacity:var(--dk,0);pointer-events:none}
 .cap{position:absolute;left:0;right:0;z-index:2;bottom:calc(64px + env(safe-area-inset-bottom, 0px));opacity:var(--co,1);transform:translate3d(0,var(--ty,0px),0)}
+.np{display:inline-flex;align-items:center;gap:10px;max-width:100%;margin-bottom:18px;padding:7px 14px 7px 11px;border-radius:999px;background:rgba(13,11,9,.55);border:1px solid rgba(244,239,231,.16);font-size:12.5px;line-height:1.3;color:var(--on-dark);white-space:nowrap}
+.np span{overflow:hidden;text-overflow:ellipsis}
+.eq{display:inline-flex;align-items:flex-end;gap:2px;height:12px;flex:none}
+.eq b{width:2.5px;height:100%;border-radius:1px;background:#FF2D6F;transform-origin:bottom;transform:scaleY(.35);animation:eq 1s ease-in-out infinite paused}
+.eq b:nth-child(2){background:#B045C8;animation-delay:-.33s}.eq b:nth-child(3){background:#7C5CFF;animation-delay:-.66s}
+.layer.on .eq b{animation-play-state:running}
+@keyframes eq{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+.clock{min-width:3.3em;color:var(--on-dark);font-size:13px}
 .cap .tag{display:flex;gap:14px;align-items:baseline;margin-bottom:16px;font-size:10.5px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--on-dark-soft)}
 .cap .tag b{font-family:var(--mono);font-weight:500;letter-spacing:.04em;font-size:12px;color:var(--on-dark)}
 .cap q{display:block;font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(48px,8vw,116px);line-height:.98;quotes:"“" "”";max-width:9em}
@@ -256,21 +297,36 @@ em{font-style:italic}
 .cap small{display:block;margin-top:16px;font-size:15px;color:var(--on-dark-soft)}
 .hud{position:absolute;left:0;right:0;z-index:5;top:calc(26px + env(safe-area-inset-top, 0px));pointer-events:none}
 .hud .wrap{display:flex;align-items:center;gap:16px;font-family:var(--mono);font-size:11.5px;color:var(--on-dark-soft);font-variant-numeric:tabular-nums}
-.segs{flex:1;display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.segs{flex:1;display:grid;grid-template-columns:repeat(var(--n,9),1fr);gap:5px}
 .segs i{display:block;height:2px;background:rgba(244,239,231,.22);position:relative;overflow:hidden}
 .segs i b{position:absolute;inset:0;background:var(--on-dark);transform-origin:left;transform:scaleX(var(--f,0))}
 .speed{min-width:3.6em;text-align:right;color:var(--on-dark)}
 @media (max-width:820px){
   .made-head{padding-block:88px 44px}
-  .reelwrap{height:560vh}
+  .reelwrap{height:860vh}
   .cap{bottom:calc(44px + env(safe-area-inset-bottom, 0px))}
   .cap q{font-size:52px}
+  .np{margin-bottom:14px;font-size:12px}
   .hud{top:calc(18px + env(safe-area-inset-top, 0px))}
 }
 .reelwrap.static{height:auto}
 .reelwrap.static .stage2{position:relative;height:auto;clip-path:none;display:grid;gap:12px}
-.reelwrap.static .layer{position:relative;height:72svh;clip-path:none}
+.reelwrap.static .layer{position:relative;height:72svh;transform:none}
+.reelwrap.static .inner{transform:none}
 .reelwrap.static .hud{display:none}
+
+/* ---------- ticker: what's on the feed, pushed by your scroll ---------- */
+.ticker{position:relative;overflow:hidden;background:var(--paper-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:46px 0 50px}
+.ticker .label{display:block;text-align:center;margin-bottom:24px}
+.trow{overflow:hidden;padding:6px 0}
+.track{display:flex;width:max-content;will-change:transform}
+.grp{display:flex;gap:10px;padding-right:10px;flex:none}
+.tk{display:inline-flex;align-items:center;gap:10px;padding:12px 18px 12px 14px;border:1px solid var(--line);border-radius:999px;background:var(--paper);font-size:14px;white-space:nowrap}
+.tk svg{width:18px;height:18px;color:var(--rust);flex:none}
+.tk em{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--ink-soft)}
+.tk.dark{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.tk.dark svg{color:#E9B48A}.tk.dark em{color:rgba(246,243,238,.6)}
+@media (max-width:820px){.ticker{padding:38px 0 42px}.tk{font-size:13px;padding:10px 16px 10px 12px}}
 
 /* ---------- pinned record: how it learns ---------- */
 .how{position:relative;height:720vh;background:var(--paper)}
@@ -329,8 +385,10 @@ em{font-style:italic}
 @media (max-width:820px){.fgrid{grid-template-columns:1fr;gap:36px}.founders{padding-block:88px}}
 
 /* ---------- closing film ---------- */
-.closing{min-height:min(84svh,740px);display:flex;align-items:center;justify-content:center;text-align:center;background:radial-gradient(520px 380px at 50% 34%,rgba(255,45,111,.18),transparent 70%),radial-gradient(640px 460px at 62% 70%,rgba(124,92,255,.16),transparent 70%),#12100e}
+.closing{min-height:min(84svh,740px);display:flex;align-items:center;justify-content:center;text-align:center;background:#12100e}
+.closing::before{content:"";position:absolute;inset:-10%;background:radial-gradient(520px 380px at 50% 34%,rgba(255,45,111,.22),transparent 70%),radial-gradient(640px 460px at 62% 70%,rgba(124,92,255,.2),transparent 70%);opacity:calc(.25 + var(--ci,1) * .75);transform:scale(calc(.75 + var(--ci,1) * .35)) rotate(calc((1 - var(--ci,1)) * 25deg))}
 .closing .inner{position:relative;z-index:2;padding-block:110px}
+.closing .appicon{opacity:var(--ci,1);transform:translateY(calc((1 - var(--ci,1)) * 46px)) scale(calc(.55 + var(--ci,1) * .45)) rotate(calc((1 - var(--ci,1)) * -18deg))}
 .closing h2{font-size:clamp(44px,6.4vw,88px);line-height:1;margin:0 0 40px}
 
 footer{background:var(--paper);padding-block:40px calc(40px + env(safe-area-inset-bottom, 0px));border-top:1px solid var(--line)}
@@ -345,6 +403,9 @@ footer .mark .logo{width:24px;height:24px}
   .how{height:auto}
   .how .pin{position:static;height:auto;padding-block:100px}
   .st{opacity:1}.st p{max-height:none;opacity:1;margin:8px 0 10px}
+  .say{height:auto}.say-pin{position:static;height:auto;padding-block:120px}.say-text .w{opacity:1!important}
+  .hero h1 .ln > span{transform:none}
+  .track{width:auto;padding:0 20px}.grp{flex-wrap:wrap;justify-content:center;flex:1}.grp[aria-hidden]{display:none}
 }
 </style>
 
@@ -360,6 +421,7 @@ footer .mark .logo{width:24px;height:24px}
   </defs>
 </svg>
 
+<div class="pbar" id="pbar" aria-hidden="true"></div>
 <div class="mini" id="mini" aria-hidden="true">
   <div class="wrap">
     <a class="mark" href="#top" tabindex="-1"><svg class="logo" aria-hidden="true"><use href="#sbTile"/></svg>Soundbites</a>
@@ -384,7 +446,7 @@ footer .mark .logo{width:24px;height:24px}
   </div>
   <div class="hero-body wrap">
     <div class="label">Coming soon to iPhone</div>
-    <h1>Your feed.<br><em>For your ears.</em></h1>
+    <h1><span class="ln"><span>Your feed.</span></span><span class="ln"><span><em>For your ears.</em></span></span></h1>
     <p>Short audio clips that play one after another and learn what you like.</p>
     <div class="ctas">
       <a class="btn btn-fill" href="#listen" id="ctaListen">Hear it
@@ -405,6 +467,10 @@ footer .mark .logo{width:24px;height:24px}
 </section>
 
 <main>
+  <section class="say" id="say" aria-label="Why Soundbites">
+    <div class="say-pin"><p class="say-text wrap" id="sayText">You don’t have a free hour. You have the drive, the dog walk, the dishes. <em>Soundbites fills those minutes</em> with short clips picked for you.</p></div>
+  </section>
+
   <section class="demo" id="listen">
     <div class="wrap try">
       <div class="stage" id="demo">
@@ -489,17 +555,43 @@ footer .mark .logo{width:24px;height:24px}
     </div>
     <div class="reelwrap" id="reelwrap">
       <div class="stage2" id="stage2">
-      <div class="layer"><video muted playsinline preload="none" poster="media/s2-drive.jpg" data-reel="media/s2-drive.mp4" style="object-position:30% 50%" aria-hidden="true"></video>
-        <div class="cap"><div class="wrap"><span class="tag"><b>08:10</b>Driving</span><q class="plain">No taps.</q><small>Eyes stay on the road.</small></div></div></div>
-      <div class="layer"><video muted playsinline preload="none" poster="media/s3-cycle.jpg" data-reel="media/s3-cycle.mp4" style="object-position:58% 50%" aria-hidden="true"></video>
-        <div class="cap"><div class="wrap"><span class="tag"><b>12:40</b>Riding</span><q>Skip.</q><small>Phone stays in your pocket.</small></div></div></div>
-      <div class="layer"><video muted playsinline preload="none" poster="media/s4-run.jpg" data-reel="media/s4-run.mp4" style="object-position:46% 50%" aria-hidden="true"></video>
-        <div class="cap"><div class="wrap"><span class="tag"><b>18:05</b>Running</span><q class="plain">Ten clips, one run.</q><small>Every one picked for you.</small></div></div></div>
-      <div class="layer"><video muted playsinline preload="none" poster="media/s1-cook.jpg" data-reel="media/s1-cook.mp4" style="object-position:42% 50%" aria-hidden="true"></video>
-        <div class="cap"><div class="wrap"><span class="tag"><b>19:30</b>Cooking</span><q>More like this.</q><small>Hands in the breadcrumbs.</small></div></div></div>
-      <div class="layer"><video muted playsinline preload="none" poster="media/s5-home.jpg" data-reel="media/s5-home.mp4" style="object-position:40% 50%" aria-hidden="true"></video>
-        <div class="cap"><div class="wrap"><span class="tag"><b>22:15</b>Unwinding</span><q class="plain">Double-tap to keep it.</q><small>The feed remembers.</small></div></div></div>
-        <div class="hud" aria-hidden="true"><div class="wrap"><span id="reelCount">01 / 05</span><span class="segs" id="segs"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></span><span class="speed" id="reelSpeed">1.0×</span></div></div>
+      <div class="layer" data-t="07:05"><div class="inner">
+        <video muted playsinline preload="none" poster="media/s6-dog.jpg" data-reel="media/s6-dog.mp4" style="object-position:42% 50%" aria-hidden="true"></video><i class="dim"></i>
+        <div class="cap"><div class="wrap"><span class="np"><i class="eq"><b></b><b></b><b></b></i><span>The five minute rule</span></span><span class="tag"><b>07:05</b>Morning walk</span><q>Next.</q><small>Leash in one hand, coffee in the other.</small></div></div>
+      </div></div>
+      <div class="layer" data-t="08:10"><div class="inner">
+        <video muted playsinline preload="none" poster="media/s2-drive.jpg" data-reel="media/s2-drive.mp4" style="object-position:30% 50%" aria-hidden="true"></video><i class="dim"></i>
+        <div class="cap"><div class="wrap"><span class="np"><i class="eq"><b></b><b></b><b></b></i><span>Three habits of calm drivers</span></span><span class="tag"><b>08:10</b>Driving</span><q class="plain">No taps.</q><small>Eyes stay on the road.</small></div></div>
+      </div></div>
+      <div class="layer" data-t="08:40"><div class="inner">
+        <video muted playsinline preload="none" poster="media/s7-bus.jpg" data-reel="media/s7-bus.mp4" style="object-position:38% 50%" aria-hidden="true"></video><i class="dim"></i>
+        <div class="cap"><div class="wrap"><span class="np"><i class="eq"><b></b><b></b><b></b></i><span>My smart speaker ordered twelve pillows</span></span><span class="tag"><b>08:40</b>On the bus</span><q class="plain">One stop, one story.</q><small>Short enough to finish before you get off.</small></div></div>
+      </div></div>
+      <div class="layer" data-t="12:40"><div class="inner">
+        <video muted playsinline preload="none" poster="media/s3-cycle.jpg" data-reel="media/s3-cycle.mp4" style="object-position:58% 50%" aria-hidden="true"></video><i class="dim"></i>
+        <div class="cap"><div class="wrap"><span class="np"><i class="eq"><b></b><b></b><b></b></i><span>Butterfly: rhythm, not strength</span></span><span class="tag"><b>12:40</b>Riding</span><q>Skip.</q><small>Both hands on the bars.</small></div></div>
+      </div></div>
+      <div class="layer" data-t="13:20"><div class="inner">
+        <video muted playsinline preload="none" poster="media/s8-walk.jpg" data-reel="media/s8-walk.mp4" style="object-position:43% 50%" aria-hidden="true"></video><i class="dim"></i>
+        <div class="cap"><div class="wrap"><span class="np"><i class="eq"><b></b><b></b><b></b></i><span>How a VC fund actually works</span></span><span class="tag"><b>13:20</b>Lunch walk</span><q>Like.</q><small>Hands stay in your pockets.</small></div></div>
+      </div></div>
+      <div class="layer" data-t="18:05"><div class="inner">
+        <video muted playsinline preload="none" poster="media/s4-run.jpg" data-reel="media/s4-run.mp4" style="object-position:46% 50%" aria-hidden="true"></video><i class="dim"></i>
+        <div class="cap"><div class="wrap"><span class="np"><i class="eq"><b></b><b></b><b></b></i><span>A day on Venus is longer than its year</span></span><span class="tag"><b>18:05</b>Running</span><q class="plain">Ten clips, one run.</q><small>Every one picked for you.</small></div></div>
+      </div></div>
+      <div class="layer" data-t="19:30"><div class="inner">
+        <video muted playsinline preload="none" poster="media/s1-cook.jpg" data-reel="media/s1-cook.mp4" style="object-position:42% 50%" aria-hidden="true"></video><i class="dim"></i>
+        <div class="cap"><div class="wrap"><span class="np"><i class="eq"><b></b><b></b><b></b></i><span>Lions and the yellow-frame magazine</span></span><span class="tag"><b>19:30</b>Cooking</span><q>More like this.</q><small>Hands in the breadcrumbs.</small></div></div>
+      </div></div>
+      <div class="layer" data-t="20:45"><div class="inner">
+        <video muted playsinline preload="none" poster="media/s9-tidy.jpg" data-reel="media/s9-tidy.mp4" style="object-position:60% 50%" aria-hidden="true"></video><i class="dim"></i>
+        <div class="cap"><div class="wrap"><span class="np"><i class="eq"><b></b><b></b><b></b></i><span>Why we hum while we clean</span></span><span class="tag"><b>20:45</b>Tidying up</span><q>Pause.</q><small>Gloves on. Voice on.</small></div></div>
+      </div></div>
+      <div class="layer" data-t="22:15"><div class="inner">
+        <video muted playsinline preload="none" poster="media/s5-home.jpg" data-reel="media/s5-home.mp4" style="object-position:40% 50%" aria-hidden="true"></video><i class="dim"></i>
+        <div class="cap"><div class="wrap"><span class="np"><i class="eq"><b></b><b></b><b></b></i><span>Why a short night feels so bad</span></span><span class="tag"><b>22:15</b>Unwinding</span><q class="plain">Double-tap to keep it.</q><small>The feed remembers.</small></div></div>
+      </div></div>
+        <div class="hud" aria-hidden="true"><div class="wrap"><span class="clock" id="reelClock">07:05</span><span class="segs" id="segs"></span><span class="speed" id="reelSpeed">1.0×</span></div></div>
       </div>
     </div>
   </section>
@@ -528,6 +620,12 @@ footer .mark .logo{width:24px;height:24px}
     </div>
   </section>
 
+  <section class="ticker" id="ticker" aria-label="On the feed today">
+    <span class="label">On the feed today</span>
+    <div class="trow" data-dir="-1"><div class="track" id="trackA"></div></div>
+    <div class="trow" data-dir="1"><div class="track" id="trackB"></div></div>
+  </section>
+
   <section class="founders" id="founders">
     <div class="wrap fgrid">
       <h2 class="rv">Built in Tel Aviv by two people <em>who needed it first.</em></h2>
@@ -540,7 +638,7 @@ footer .mark .logo{width:24px;height:24px}
 
   <section class="film closing" id="closing" aria-labelledby="close-h">
     <div class="inner wrap">
-      <svg class="appicon rv" role="img" aria-label="Soundbites app icon"><use href="#sbTile"/></svg>
+      <svg class="appicon" role="img" aria-label="Soundbites app icon"><use href="#sbTile"/></svg>
       <h2 id="close-h" class="rv">Fill those hours with <em>something worth hearing.</em></h2>
       <a class="btn btn-fill" href="#listen">Hear it
         <svg viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M0 5h15M11 1l4 4-4 4"/></svg></a>
@@ -556,6 +654,7 @@ footer .mark .logo{width:24px;height:24px}
   </div>
 </footer>
 
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
 (function(){
   const CATS = {
@@ -761,7 +860,7 @@ footer .mark .logo{width:24px;height:24px}
     setupAnalyser(); if(ctx && ctx.state==="suspended") ctx.resume();
     audio.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));
     log(`Playing <b>${CLIPS[history[pos]].title}</b>.`);
-    screen.classList.add("live");
+    screen.classList.add("live"); screen.setAttribute("data-lenis-prevent", "");
     screen.focus({preventScroll:true});
   });
   $("ctaListen").addEventListener("click", ()=>{ setTimeout(()=>$("startBtn").hidden || $("startBtn").focus({preventScroll:true}), 500); });
@@ -822,7 +921,7 @@ footer .mark .logo{width:24px;height:24px}
     started = true; $("startBtn").hidden = true;
     setupAnalyser(); if(ctx && ctx.state === "suspended") ctx.resume();
     audio.play().then(()=>setPlaying(true)).catch(()=>setPlaying(false));
-    screen.classList.add("live");
+    screen.classList.add("live"); screen.setAttribute("data-lenis-prevent", "");
   }
   function setListening(on){
     listening = on;
@@ -833,14 +932,17 @@ footer .mark .logo{width:24px;height:24px}
   function unsupported(){
     $("tryVoice").classList.add("off");
     $("heard").textContent = isIOS
-      ? "On iPhone, voice switches on once the site has its own web address. For now, try it on a computer in Chrome, or use the buttons on the phone."
-      : "Voice isn’t available in this browser. Try Chrome on a computer, or use the buttons on the phone.";
+      ? "Voice works in Safari. If you opened this inside another app, open it in Safari, or use the buttons on the phone."
+      : "Voice isn’t available in this browser. Try Chrome or Safari, or use the buttons on the phone.";
   }
   function voiceMsg(code){
-    if(code === "unavailable" || ((code === "not-allowed" || code === "service-not-allowed") && isIOS)){ unsupported(); return; }
+    if(code === "unavailable"){ unsupported(); return; }
     const m = {
       not_granted:"The microphone is off for this page. Turn it on from the page’s Permissions menu.",
-      "not-allowed":"This browser blocked the microphone for this page.",
+      "not-allowed": isIOS ? "Microphone blocked. In Safari tap aA, then Website Settings, then allow the microphone." : "This browser blocked the microphone for this page.",
+      "service-not-allowed": isIOS ? "Turn on Dictation (Settings, General, Keyboard), then try again." : "Speech isn’t available in this browser. Try Chrome, or use the buttons on the phone.",
+      "audio-capture":"No microphone found.",
+      network:"Voice needs an internet connection.",
       dismissed:"No problem. Tap again whenever you like.",
       rate_limited:"Busy for a moment. Try again shortly."
     }[code] || "The microphone didn’t start. Try again.";
@@ -884,7 +986,7 @@ footer .mark .logo{width:24px;height:24px}
       try{
         rec = new SR(); rec.lang = "en-US"; rec.continuous = true; rec.interimResults = true;
         rec.onresult = e=>{ for(let i = e.resultIndex; i < e.results.length; i++){ const r = e.results[i]; hear(r[0].transcript, r.isFinal); } };
-        rec.onerror = e=>{ setListening(false); voiceMsg(e.error); };
+        rec.onerror = e=>{ if(e.error === "no-speech" || e.error === "aborted") return; setListening(false); voiceMsg(e.error); };
         rec.onend = ()=>{ if(listening){ try{ rec.start(); }catch(e){ setListening(false); } } };
         rec.start(); startPlayer(); setListening(true); $("heard").textContent = HINT;
       }catch(e){ unsupported(); }
@@ -987,91 +1089,202 @@ footer .mark .logo{width:24px;height:24px}
     v.play && v.play().catch(()=>{});
   });
 
-  /* --- scroll engine: hero parallax, phone tilt, pinned gallery, turning record, mini header --- */
+  /* --- scroll engine: smooth wheel, hero, statement words, phone tilt, day reel (curtain wipes, clock, settle), record, ticker, closing, mini header --- */
   (function(){
     const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const hero = document.querySelector(".hero"), phone = $("phone"), stage = $("demo");
-    const reelwrap = $("reelwrap"), stage2 = $("stage2"), layers = [...stage2.querySelectorAll(".layer")], segFills = [...document.querySelectorAll("#segs b")], reelCount = $("reelCount"), reelSpeed = $("reelSpeed");
-    const rvids = layers.map(l=>l.querySelector("video")), NL = layers.length;
+    const FINE = matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
     const smooth = t=>t*t*(3-2*t);
-    let reelOn = false, reelRate = 1, lastActive = -1;
+    const VH = ()=>document.documentElement.clientHeight || innerHeight;   // steady on iPhone while the toolbar slides
+    const hero = document.querySelector(".hero"), phone = $("phone"), stage = $("demo");
+    const how = $("how"), steps = [...how.querySelectorAll(".st")], mini = $("mini"), closing = $("closing"), pbar = $("pbar");
+
+    /* day reel setup */
+    const reelwrap = $("reelwrap"), stage2 = $("stage2"), layers = [...stage2.querySelectorAll(".layer")];
+    const reelClock = $("reelClock"), reelSpeed = $("reelSpeed"), segsEl = $("segs");
+    const rvids = layers.map(l=>l.querySelector("video")), NL = layers.length, W = .34;
+    segsEl.style.setProperty("--n", NL); segsEl.innerHTML = "<i><b></b></i>".repeat(NL);
+    const segFills = [...segsEl.querySelectorAll("b")];
+    const TIMES = layers.map(L=>{ const p = (L.dataset.t || "0:0").split(":").map(Number); return p[0]*60 + p[1]; });
+    const fmt = m=>{ m = Math.round(m); return String(Math.floor(m/60) % 24).padStart(2,"0") + ":" + String(m % 60).padStart(2,"0"); };
+    let reelOn = false, reelRate = 1, lastActive = -1, lastClock = "";
     if(RM) reelwrap.classList.add("static");
     rvids.forEach(v=>v.addEventListener("ended", ()=>{
       const n = (+v.dataset.plays || 1) + 1;
       if(n <= 2){ v.dataset.plays = n; v.currentTime = 0; v.play().catch(()=>{}); }
       else v.dataset.done = "1";
     }));
-    const how = $("how"), steps = [...how.querySelectorAll(".st")], mini = $("mini");
-    const closing = $("closing");
-    const narrow = matchMedia("(max-width: 820px)");
-    const clamp = (x,a=0,b=1)=>Math.max(a,Math.min(b,x));
-    const ease = t=>1-Math.pow(1-t,3);
-    let lastY = scrollY, ticking = false, lastStep = -1;
 
-    function sizeMade(){}
+    /* statement: one span per word */
+    const say = $("say"), sayText = $("sayText"), words = [];
+    (function(){
+      const frag = document.createDocumentFragment();
+      [...sayText.childNodes].forEach(n=>{
+        const em = n.nodeType === 1;
+        n.textContent.split(/(\s+)/).forEach(tok=>{
+          if(!tok) return;
+          if(/^\s+$/.test(tok)){ frag.appendChild(document.createTextNode(" ")); return; }
+          const s = document.createElement("span"); s.className = em ? "w em" : "w"; s.textContent = tok;
+          frag.appendChild(s); words.push(s);
+        });
+      });
+      sayText.textContent = ""; sayText.appendChild(frag);
+    })();
+
+    /* ticker: two rows of clips, pushed along by your scroll */
+    const TICK = [
+      ["Science","A day on Venus is longer than its year","0:27"], ["Comedy","My smart speaker ordered twelve pillows","0:22"],
+      ["Business","How a VC fund actually works","0:55"], ["Sports","Butterfly: rhythm, not strength","0:32"],
+      ["Mindful","The five minute rule","0:22"], ["Driving","Three habits of calm drivers","0:26"],
+      ["Science","Why a short night feels so bad","0:34"], ["Science","Lions are the only social big cats","0:38"]
+    ];
+    const TICK2 = [
+      ["Business","What the first ten hires decide","0:41"], ["Comedy","I tried to return a gift card","0:29"],
+      ["Science","Octopuses taste with their arms","0:24"], ["Mindful","The ten minute walk that resets you","0:31"],
+      ["Sports","The fastest goal ever scored","0:19"], ["Driving","Why traffic jams appear from nowhere","0:36"],
+      ["Science","How noise cancelling actually works","0:28"], ["Comedy","My dog has a better routine than me","0:25"]
+    ];
+    const pill = (c,t,d,dark)=>`<span class="tk${dark ? " dark" : ""}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[c]}</svg>${t}<em>${d}</em></span>`;
+    const rows = [[$("trackA"), TICK, -1], [$("trackB"), TICK2, 1]].map(([el, list, d])=>{
+      const once = list.map((x,i)=>pill(x[0], x[1], x[2], i % 4 === 1)).join("");
+      el.innerHTML = `<div class="grp">${once}</div><div class="grp" aria-hidden="true">${once}</div>`;
+      return {el, d, x: d > 0 ? -400 : 0, P: 1};
+    });
+    const measureTicker = ()=>rows.forEach(r=>{ r.P = Math.max(1, r.el.firstElementChild.offsetWidth); });
+    measureTicker(); if(document.fonts && document.fonts.ready) document.fonts.ready.then(measureTicker);
+    let tickOn = false;
+    function tickerStep(dt, sv){
+      const k = dt / 16.67;
+      rows.forEach(r=>{
+        r.x += r.d * (.5 + sv * 7.5) * k;
+        r.x = ((r.x % r.P) - r.P) % r.P;
+        r.el.style.transform = `translate3d(${r.x.toFixed(1)}px,0,0)`;
+      });
+    }
+
+    /* smooth wheel scrolling on computers; phones keep their native scroll */
+    let lenis = null;
+    if(window.Lenis && FINE && !RM){
+      try{
+        lenis = new Lenis({lerp:.11, smoothWheel:true});
+        const raf = t=>{ lenis.raf(t); requestAnimationFrame(raf); }; requestAnimationFrame(raf);
+      }catch(e){ lenis = null; }
+    }
+    /* in-page links glide instead of jumping */
+    document.addEventListener("click", e=>{
+      const a = e.target.closest && e.target.closest('a[href^="#"]'); if(!a) return;
+      const id = a.getAttribute("href"), el = id === "#top" ? null : document.querySelector(id);
+      if(id !== "#top" && !el) return;
+      e.preventDefault();
+      if(lenis) lenis.scrollTo(el || 0, {duration:1.4});
+      else if(!el) scrollTo({top:0, behavior: RM ? "auto" : "smooth"});
+      else el.scrollIntoView({behavior: RM ? "auto" : "smooth"});
+    });
+
+    let lastY = scrollY, ticking = false, lastStep = -1, dir = 1;
     function update(){
       ticking = false;
-      const vh = innerHeight, y = scrollY;
+      const vh = VH(), y = scrollY;
+      if(y !== lastY) dir = y > lastY ? 1 : -1;
+      // page progress line
+      pbar.style.setProperty("--sp", clamp(y / Math.max(1, document.documentElement.scrollHeight - vh)).toFixed(4));
       // hero
-      const hp = clamp(y / Math.max(1, hero.offsetHeight));
-      if(!RM) hero.style.setProperty("--hp", hp.toFixed(3));
+      if(!RM) hero.style.setProperty("--hp", clamp(y / Math.max(1, hero.offsetHeight)).toFixed(3));
+      // statement words light up
+      if(!RM){
+        const s = say.getBoundingClientRect();
+        if(s.top < vh && s.bottom > 0){
+          const a = vh * .35, b = -(say.offsetHeight - vh) + vh * .2;
+          const lit = clamp((a - s.top) / (a - b)) * (words.length + 1);
+          words.forEach((w,i)=>{ const o = (.13 + .87 * clamp(lit - i)).toFixed(2); if(w._o !== o){ w._o = o; w.style.opacity = o; } });
+        }
+      }
       // phone settles out of 3D
       if(!RM){
         const r = stage.getBoundingClientRect();
-        const q = clamp((vh - r.top) / (vh * .9));
-        phone.style.setProperty("--q", (q*q*(3-2*q)).toFixed(3));
+        phone.style.setProperty("--q", smooth(clamp((vh - r.top) / (vh * .9))).toFixed(3));
       }
-      // day reel: scroll wipes scene to scene
+      // day reel
       if(!RM){
         const rr = reelwrap.getBoundingClientRect();
         reelOn = rr.top < vh * 1.5 && rr.bottom > -vh * .5;
-        stage2.style.setProperty("--ei", (1 - smooth(clamp((vh - rr.top) / vh))).toFixed(3));
-        const P = clamp(-rr.top / Math.max(1, reelwrap.offsetHeight - vh));
-        const seg = P * NL, W = .34;
-        let active = 0;
-        layers.forEach((L,k)=>{
-          const rin = k === 0 ? 1 : smooth(clamp((seg - (k - W)) / W));
-          const out = k === NL-1 ? 0 : smooth(clamp((seg - (k + 1 - W)) / W));
-          if(k > 0) L.style.clipPath = `inset(${((1 - rin) * 100).toFixed(2)}% 0 0 0)`;
-          L.style.setProperty("--z", (1.16 - .16 * rin).toFixed(3));
-          L.style.setProperty("--py", (-out * 7).toFixed(2) + "%");
-          L.style.setProperty("--br", (1 - out * .6).toFixed(3));
-          L.style.setProperty("--co", (rin * (1 - out)).toFixed(3));
-          L.style.setProperty("--ty", ((1 - rin) * 60 - out * 40).toFixed(1) + "px");
-          if(rin > .5) active = k;
-          const v = rvids[k];
-          const visible = reelOn && rin > 0 && out < 1;
-          if(visible){ if(!v.src) v.src = v.dataset.reel; if(v.paused && !v.dataset.done) v.play().catch(()=>{}); }
-          else if(!v.paused) v.pause();
-          if(reelOn && !v.src && Math.abs(seg - k) < 1.5) { v.src = v.dataset.reel; v.preload = "auto"; }
-        });
-        segFills.forEach((b,k)=>b.style.setProperty("--f", clamp(seg - k).toFixed(3)));
-        if(active !== lastActive){ lastActive = active; reelCount.textContent = String(active + 1).padStart(2,"0") + " / 0" + NL; }
+        if(reelOn){
+          stage2.style.setProperty("--ei", (1 - smooth(clamp((vh - rr.top) / vh))).toFixed(3));
+          const seg = clamp(-rr.top / Math.max(1, reelwrap.offsetHeight - vh)) * NL;
+          let active = 0;
+          layers.forEach((L,k)=>{
+            const rin = k === 0 ? 1 : smooth(clamp((seg - (k - W)) / W));
+            const out = k === NL-1 ? 0 : smooth(clamp((seg - (k + 1 - W)) / W));
+            const shown = rin > 0 && out < 1;
+            if(L._shown !== shown){ L._shown = shown; L.style.visibility = shown ? "" : "hidden"; }
+            if(shown){
+              if(k > 0) L.style.setProperty("--w", (1 - rin).toFixed(4));
+              L.style.setProperty("--z", (1.16 - .16 * rin).toFixed(3));
+              L.style.setProperty("--py", (-out * 7).toFixed(2) + "%");
+              L.style.setProperty("--dk", (out * .6).toFixed(3));
+              L.style.setProperty("--co", (rin * (1 - out)).toFixed(3));
+              L.style.setProperty("--ty", ((1 - rin) * 60 - out * 40).toFixed(1) + "px");
+            }
+            if(rin > .5) active = k;
+            const v = rvids[k];
+            if(shown){ if(!v.src) v.src = v.dataset.reel; if(v.paused && !v.dataset.done) v.play().catch(()=>{}); }
+            else if(!v.paused) v.pause();
+            if(!v.src && Math.abs(seg - k) < 1.5){ v.preload = "auto"; v.src = v.dataset.reel; }
+          });
+          segFills.forEach((b,k)=>b.style.setProperty("--f", clamp(seg - k).toFixed(3)));
+          if(active !== lastActive){ if(layers[lastActive]) layers[lastActive].classList.remove("on"); layers[active].classList.add("on"); lastActive = active; }
+          // the clock holds on each scene and rolls forward through the wipe
+          const k = Math.min(NL - 1, Math.floor(seg)), f = seg - k;
+          const t = TIMES[k] + ((k < NL - 1 ? TIMES[k+1] : TIMES[k]) - TIMES[k]) * smooth(clamp((f - (1 - W)) / W));
+          const txt = fmt(t); if(txt !== lastClock){ lastClock = txt; reelClock.textContent = txt; }
+        } else rvids.forEach(v=>{ if(!v.paused) v.pause(); });
       }
       // record turns, steps change
       const h = how.getBoundingClientRect();
       const hp2 = clamp(-h.top / Math.max(1, how.offsetHeight - vh));
       how.style.setProperty("--p", hp2.toFixed(4));
       const step = Math.min(3, Math.floor(hp2 * 4));
-      if(step !== lastStep){
-        lastStep = step; how.dataset.step = step;
-        steps.forEach((el,i)=>el.classList.toggle("on", i === step));
+      if(step !== lastStep){ lastStep = step; how.dataset.step = step; steps.forEach((el,i)=>el.classList.toggle("on", i === step)); }
+      // closing: glow and icon arrive with the scroll
+      if(!RM){
+        const c = closing.getBoundingClientRect();
+        closing.style.setProperty("--ci", smooth(clamp(((vh - c.top) / vh - .1) / .75)).toFixed(3));
       }
-      // closing film eases in
-      const c = closing.getBoundingClientRect();
-      closing.style.setProperty("--cp", clamp((vh - c.top) / vh).toFixed(3));
-      // mini header: show on scroll up, past the hero
+      // mini header: show on scroll up, past the hero (never over the pinned reel's clock)
       const pastHero = y > hero.offsetHeight - 60;
-      if(!pastHero) mini.classList.remove("show");
+      const rp = reelwrap.getBoundingClientRect(), inReel = rp.top < 60 && rp.bottom > vh * .5;
+      if(!pastHero || inReel) mini.classList.remove("show");
       else if(y < lastY - 4) mini.classList.add("show");
       else if(y > lastY + 4) mini.classList.remove("show");
       lastY = y;
     }
-    let vy = scrollY, vt = performance.now(), vel = 0;
+
+    /* settle: if you stop halfway through a wipe, glide to the nearest whole scene */
+    let idleT = 0, touching = false;
+    addEventListener("touchstart", ()=>{ touching = true; clearTimeout(idleT); }, {passive:true});
+    addEventListener("touchend", ()=>{ touching = false; armSettle(); }, {passive:true});
+    addEventListener("touchcancel", ()=>{ touching = false; }, {passive:true});
+    function armSettle(){ clearTimeout(idleT); idleT = setTimeout(settle, lenis ? 120 : 170); }
+    function settle(){
+      if(RM || touching) return;
+      const vh = VH(), rr = reelwrap.getBoundingClientRect(), span = reelwrap.offsetHeight - vh;
+      if(rr.top > 1 || rr.bottom < vh - 1) return;
+      const seg = clamp(-rr.top / span) * NL, k = Math.floor(seg), u = (seg - k - (1 - W)) / W;
+      if(k >= NL - 1 || u <= .04 || u >= .96) return;
+      const toNext = dir > 0 ? u > .22 : u > .78;
+      const top = scrollY + rr.top + (toNext ? k + 1 : k + 1 - W) / NL * span;
+      if(Math.abs(top - scrollY) < 2) return;
+      if(lenis) lenis.scrollTo(top, {duration:.75});
+      else scrollTo({top, behavior:"smooth"});
+    }
+
+    /* scroll speed drives the reel's playback rate and pushes the ticker */
+    let vy = scrollY, vt = performance.now(), vel = 0, svel = 0;
     function speedLoop(now){
-      const dy = Math.abs(scrollY - vy), dt = Math.max(1, now - vt);
+      const d = scrollY - vy, dt = Math.min(64, Math.max(1, now - vt));
       vy = scrollY; vt = now;
-      vel += ((dy / dt) - vel) * .25;
+      vel += ((Math.abs(d) / dt) - vel) * .25;
+      svel += ((d / dt) - svel) * .2;
       if(reelOn && !RM){
         const target = Math.min(3, 1 + vel * 1.4);
         reelRate += (target - reelRate) * (target > reelRate ? .2 : .06);
@@ -1079,15 +1292,19 @@ footer .mark .logo{width:24px;height:24px}
         rvids.forEach(v=>{ if(!v.paused && Math.abs(v.playbackRate - r) >= .1){ try{ v.playbackRate = r; }catch(e){} } });
         reelSpeed.textContent = r.toFixed(1) + "×";
       }
+      if(tickOn && !RM) tickerStep(dt, svel);
       requestAnimationFrame(speedLoop);
     }
     requestAnimationFrame(speedLoop);
-    function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } }
+    function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(update); } armSettle(); }
     addEventListener("scroll", onScroll, {passive:true});
-    addEventListener("resize", ()=>{ sizeMade(); onScroll(); });
-    narrow.addEventListener ? narrow.addEventListener("change", ()=>{ sizeMade(); onScroll(); }) : 0;
-    sizeMade(); update();
-    addEventListener("load", ()=>{ sizeMade(); update(); });
+    let lastW = innerWidth;
+    addEventListener("resize", ()=>{ if(innerWidth !== lastW){ lastW = innerWidth; measureTicker(); } onScroll(); });
+    update();
+    addEventListener("load", ()=>{ measureTicker(); update(); });
+    if("IntersectionObserver" in window){
+      new IntersectionObserver(es=>es.forEach(e=>{ tickOn = e.isIntersecting; }), {rootMargin:"100px 0px"}).observe($("ticker"));
+    } else tickOn = true;
 
     // lazy films: play only while on screen
     const films = [...document.querySelectorAll("video[data-src]")];
